@@ -2,34 +2,41 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SmartCities — Application citoyenne</title>
   <meta name="description" content="SmartCities : signalez les incidents, suivez l’avancement, et participez à la vie locale de votre ville." />
   <meta name="theme-color" content="#0B1220" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#0B1220;
       --panel:#0F172A;
-      --panel2:#0B1A2E;
-      --card:#0F172A;
       --text:#E5E7EB;
       --muted:#94A3B8;
       --line:rgba(255,255,255,.10);
+      --line2:rgba(255,255,255,.14);
+
       --shadow: 0 18px 50px rgba(0,0,0,.45);
       --shadow2: 0 10px 30px rgba(0,0,0,.35);
+
       --radius: 18px;
       --radius2: 24px;
-      --accent1:#3B82F6;
-      --accent2:#8B5CF6;
-      --accent3:#8E2DE2;
-      --danger:#EF4444;
-      --ok:#10B981;
+
+      --accent:#3B82F6;
+      --accentSoft: rgba(59,130,246,.14);
+
       --warn:#F59E0B;
+
+      --container: 1100px;
+      --tap: 44px;
+      --navH: 64px;
+      --focus: 0 0 0 4px rgba(59,130,246,.25);
+
+      --iconWhite: #FFFFFF;
     }
 
     *{box-sizing:border-box}
@@ -38,312 +45,688 @@
       margin:0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 15% -10%, rgba(59,130,246,.35), transparent 60%),
-        radial-gradient(1000px 600px at 90% 10%, rgba(139,92,246,.30), transparent 55%),
-        radial-gradient(900px 500px at 60% 110%, rgba(142,45,226,.22), transparent 55%),
-        var(--bg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
     }
 
     a{color:inherit; text-decoration:none}
-    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+    img{max-width:100%; height:auto; display:block}
+    button{font-family:inherit}
+    strong{font-weight:800}
+
+    .container{max-width: var(--container); margin:0 auto; padding:0 16px}
+    @media (min-width: 720px){ .container{padding:0 20px} }
+
+    /* ========= A11Y ========= */
+    .skip{
+      position:absolute;
+      left:12px;
+      top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(2,6,23,.95);
+      border:1px solid var(--line2);
+      transform: translateY(-200%);
+      transition: transform .15s ease;
+      z-index: 9999;
+    }
+    .skip:focus{transform: translateY(0); outline:none; box-shadow: var(--focus)}
+    :focus{outline:none}
+    :focus-visible{box-shadow: var(--focus); border-radius: 12px}
+
+    /* ========= Icons ========= */
+    .ico{width:18px;height:18px; display:inline-block; flex:0 0 auto}
+    .ico.sm{width:16px;height:16px}
+    .ico.lg{width:20px;height:20px}
+    .ico.xl{width:22px;height:22px}
+
+    /* ========= NAV (mobile-first) ========= */
     .nav{
       position:sticky; top:0; z-index:50;
       backdrop-filter: blur(10px);
-      background: rgba(11,18,32,.72);
+      background: rgba(11,18,32,.82);
       border-bottom: 1px solid var(--line);
+      padding-top: env(safe-area-inset-top);
     }
     .nav-inner{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
+      min-height: var(--navH);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
+
     .brand{
-      display:flex; align-items:center; gap:12px;
-      font-weight:800; letter-spacing:.3px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 0;
     }
+
+    /* ✅ LOGO (sans background) */
     .logo{
-      width:38px; height:38px; border-radius:12px;
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      box-shadow: 0 10px 25px rgba(59,130,246,.18);
-      position:relative; overflow:hidden;
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      overflow:hidden;
+      flex: 0 0 auto;
     }
-    .logo:after{
-      content:"";
-      position:absolute; inset:-40%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
-      transform: rotate(25deg);
-      animation: shine 5.5s ease-in-out infinite;
+    .logo-img{width:100%; height:100%; object-fit: cover}
+
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+      min-width: 0;
     }
-    @keyframes shine{
-      0%,65%{transform: translateX(-40%) rotate(25deg)}
-      100%{transform: translateX(60%) rotate(25deg)}
+    .brand-text strong{
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size: 15px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
-    .brand small{display:block; color:var(--muted); font-weight:600; letter-spacing:.2px}
-    .links{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .brand-text small{
+      display:block;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:.2px;
+      font-size: 12px;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-actions{display:flex; align-items:center; gap:10px}
+
+    .nav-toggle{
+      width: var(--tap);
+      height: var(--tap);
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.45);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      color: var(--text);
+    }
+    .nav-toggle:hover{transform: translateY(-1px); background: rgba(15,23,42,.65); border-color: rgba(255,255,255,.18)}
+
+    .links{display:none; gap:10px; align-items:center}
+
     .pill{
-      display:inline-flex; align-items:center; gap:8px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
       padding:10px 12px;
       border-radius:999px;
       border:1px solid var(--line);
       background: rgba(15,23,42,.45);
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
       color:var(--text);
-      font-weight:600;
+      font-weight:900;
       font-size:14px;
+      line-height: 1;
+      white-space: nowrap;
+      min-height: 38px;
     }
     .pill:hover{transform: translateY(-1px); background: rgba(15,23,42,.65); border-color: rgba(255,255,255,.18)}
     .pill.primary{
-      border:none;
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      box-shadow: 0 14px 30px rgba(59,130,246,.18);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(59,130,246,.92);
+      box-shadow: 0 14px 30px rgba(59,130,246,.14);
     }
 
-    .hero{padding:44px 0 26px}
-    .hero-grid{
-      display:grid; gap:18px;
-      grid-template-columns: 1.25fr .75fr;
-      align-items:stretch;
+    @media (min-width: 900px){
+      .nav-toggle{display:none}
+      .links{display:flex}
     }
-    @media (max-width: 920px){
-      .hero-grid{grid-template-columns:1fr}
+
+    /* ========= Drawer menu (mobile) ========= */
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(2,6,23,.60);
+      backdrop-filter: blur(6px);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+      z-index: 80;
+    }
+    .drawer{
+      position:fixed;
+      top: env(safe-area-inset-top);
+      right:0;
+      width: min(92vw, 360px);
+      height: calc(100vh - env(safe-area-inset-top));
+      background: rgba(15,23,42,.94);
+      border-left: 1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      transform: translateX(110%);
+      transition: transform .22s ease;
+      z-index: 90;
+      display:flex;
+      flex-direction:column;
+      padding: 14px;
+    }
+    .drawer-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 8px 6px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .drawer-title{font-weight:900; letter-spacing:.2px}
+    .drawer-close{
+      width: var(--tap);
+      height: var(--tap);
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(2,6,23,.35);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      color: var(--text);
+    }
+    .drawer-nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding: 14px 6px;
+    }
+    .drawer .pill{
+      width:100%;
+      justify-content:center;
+      padding: 14px 12px;
+      border-radius: 16px;
+      font-size: 15px;
+      min-height: 46px;
+    }
+    .drawer-foot{
+      margin-top:auto;
+      padding: 12px 6px 6px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .menu-open .backdrop{opacity:1; pointer-events:auto}
+    .menu-open .drawer{transform: translateX(0)}
+
+    /* ========= HERO ========= */
+    main{padding-bottom: 22px}
+    .hero{padding: 26px 0 10px}
+    .hero-grid{display:grid; grid-template-columns: 1fr; gap: 14px}
+    @media (min-width: 920px){
+      .hero{padding:44px 0 18px}
+      .hero-grid{grid-template-columns: 1.25fr .75fr; gap: 18px}
     }
 
     .hero-card{
       border-radius: var(--radius2);
       border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,23,42,.78), rgba(15,23,42,.52));
+      background: rgba(15,23,42,.62);
       box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
-      padding:28px;
+      padding: 18px;
     }
+    @media (min-width: 720px){ .hero-card{padding:28px} }
     .hero-card:before{
       content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(90deg, rgba(59,130,246,.18), rgba(139,92,246,.16));
+      position:absolute; left:0; right:0; top:0;
       height:4px;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background: rgba(59,130,246,.16);
-      border: 1px solid rgba(59,130,246,.25);
-      color: #CFE3FF;
-      font-weight:700;
-      letter-spacing:.2px;
-      font-size:13px;
-    }
-    h1{
-      margin:14px 0 10px;
-      font-size:38px;
-      line-height:1.05;
-      letter-spacing:-.8px;
-    }
-    .lead{
-      color: var(--muted);
-      font-size:16px;
-      line-height:1.65;
-      margin:0 0 18px;
-      max-width: 58ch;
+      background: rgba(59,130,246,.70);
     }
 
-    .cta-row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: var(--accentSoft);
+      border: 1px solid rgba(59,130,246,.25);
+      color: #CFE3FF;
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size: 13px;
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(26px, 5vw, 38px);
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+    }
+
+    .lead{
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      margin: 0 0 16px;
+      max-width: 62ch;
+    }
+    @media (min-width: 720px){ .lead{font-size:16px} }
+
+    .cta-row{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (min-width: 520px){
+      .cta-row{grid-template-columns: repeat(2, 1fr)}
+      .cta-row .btn.primary{grid-column: 1 / -1}
+    }
+    @media (min-width: 900px){
+      .cta-row{display:flex; flex-wrap:wrap; align-items:center; gap:12px}
+    }
+
     .btn{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:12px 16px;
-      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 14px 16px;
+      border-radius: 16px;
       border:1px solid var(--line);
       background: rgba(2,6,23,.35);
       color:var(--text);
-      font-weight:800;
+      font-weight:900;
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      text-align:center;
+      min-height: var(--tap);
     }
     .btn:hover{transform: translateY(-1px); background: rgba(2,6,23,.55); border-color: rgba(255,255,255,.18)}
     .btn.primary{
-      border:none;
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      box-shadow: 0 16px 35px rgba(139,92,246,.15);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(59,130,246,.92);
+      box-shadow: 0 16px 35px rgba(59,130,246,.14);
     }
-    .btn small{opacity:.85; font-weight:700}
+    .btn small{opacity:.85; font-weight:900}
 
-    .side{
-      display:flex; flex-direction:column; gap:14px;
+    .callout{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      border:1px solid rgba(245,158,11,.22);
+      background: rgba(245,158,11,.10);
+      padding: 14px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
     }
+    @media (min-width: 720px){ .callout{padding:16px} }
+    .callout strong{display:block; margin-bottom:4px}
+    .callout p{margin:0; color:#FDE68A; line-height:1.6}
+    .callout .icoWrap{
+      width: 30px;
+      height: 30px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 12px;
+      background: rgba(245,158,11,.14);
+      border: 1px solid rgba(245,158,11,.22);
+      flex: 0 0 auto;
+    }
+
+    /* ========= SIDE ========= */
+    .side{display:flex; flex-direction:column; gap: 12px}
     .mini{
       border-radius: var(--radius);
       border:1px solid var(--line);
       background: rgba(15,23,42,.55);
       box-shadow: var(--shadow2);
-      padding:16px;
+      padding: 14px;
     }
-    .mini h3{margin:0 0 8px; font-size:15px; letter-spacing:.2px}
-    .mini p{margin:0; color:var(--muted); font-size:14px; line-height:1.6}
+    @media (min-width: 720px){ .mini{padding:16px} }
+    .mini h3{margin:0 0 8px; font-size: 15px; letter-spacing:.2px}
+    .mini p{margin:0; color:var(--muted); font-size: 14px; line-height: 1.7}
     .mini .row{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
     .tag{
-      display:inline-flex; align-items:center;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       padding:8px 10px;
-      border-radius:12px;
+      border-radius: 12px;
       background: rgba(148,163,184,.10);
       border:1px solid rgba(148,163,184,.14);
       color: var(--text);
-      font-weight:700;
-      font-size:12px;
+      font-weight:900;
+      font-size: 12px;
       letter-spacing:.2px;
     }
 
-    .section{padding:12px 0 42px}
+    /* ========= SECTION + GRID ========= */
+    .section{padding: 10px 0 26px}
+    @media (min-width: 900px){ .section{padding:12px 0 42px} }
     .section-title{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;
-      margin:16px 0 14px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin: 14px 0 12px;
     }
-    .section-title h2{
-      margin:0;
-      font-size:22px;
-      letter-spacing:-.3px;
-    }
-    .section-title span{
-      color: var(--muted);
-      font-weight:600;
-      font-size:14px;
-    }
+    .section-title h2{margin:0; font-size: 20px; letter-spacing: -.3px}
+    @media (min-width: 720px){ .section-title h2{font-size:22px} }
+    .section-title span{color: var(--muted); font-weight:600; font-size: 14px; line-height:1.3}
 
-    .grid{
-      display:grid;
-      gap:14px;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr)} }
-    @media (max-width: 640px){ .grid{grid-template-columns: 1fr} }
+    .grid{display:grid; grid-template-columns: 1fr; gap: 12px}
+    @media (min-width: 720px){ .grid{grid-template-columns: repeat(2, 1fr); gap: 14px} }
+    @media (min-width: 980px){ .grid{grid-template-columns: repeat(3, 1fr)} }
 
     .card{
       border-radius: var(--radius);
       border:1px solid var(--line);
       background: rgba(15,23,42,.55);
-      padding:18px;
+      padding: 16px;
       box-shadow: var(--shadow2);
       position:relative;
       overflow:hidden;
-      min-height: 150px;
+      min-height: 140px;
     }
+    @media (min-width: 720px){ .card{padding:18px; min-height: 150px} }
     .card:before{
       content:"";
       position:absolute;
       left:0; top:0; right:0;
       height:3px;
-      background: linear-gradient(90deg, rgba(59,130,246,.75), rgba(139,92,246,.75));
-      opacity:.65;
+      background: rgba(59,130,246,.70);
+      opacity:.85;
     }
-    .card h3{margin:0 0 8px; font-size:16px}
-    .card p{margin:0; color:var(--muted); line-height:1.65; font-size:14px}
-
-    .callout{
-      margin-top:16px;
-      border-radius: var(--radius);
-      border:1px solid rgba(245,158,11,.22);
-      background: rgba(245,158,11,.10);
-      padding:16px;
-      display:flex; gap:12px; align-items:flex-start;
+    .card h3{
+      margin:0 0 8px;
+      font-size:16px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
-    .callout strong{display:block; margin-bottom:4px}
-    .callout p{margin:0; color:#FDE68A; line-height:1.6}
+    .card p{margin:0; color:var(--muted); line-height:1.7; font-size:14px}
 
+    /* ========= FOOTER ========= */
     footer{
       border-top: 1px solid var(--line);
       background: rgba(11,18,32,.55);
-      padding:22px 0;
+      padding: 18px 0;
       color: var(--muted);
-      font-size:14px;
+      font-size: 14px;
     }
-    .foot{
-      display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
-    }
-    .foot a{color: var(--text); font-weight:700; opacity:.92}
+    .foot{display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap:wrap}
+    .foot a{color: var(--text); font-weight:900; opacity:.92}
     .foot a:hover{opacity:1}
 
-    .sr-only{
-      position:absolute!important;
-      width:1px;height:1px;
-      padding:0;margin:-1px;
-      overflow:hidden;clip:rect(0,0,0,0);
-      white-space:nowrap;border:0;
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto!important}
+      .pill,.btn,.nav-toggle{transition:none}
     }
   </style>
 </head>
 
 <body>
+  <a class="skip" href="#main">Aller au contenu principal</a>
+
+  <!-- ===== SVG ICONS (✅ stroke/fill forcés en BLANC directement dans les symbol) ===== -->
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <line x1="4" y1="7" x2="20" y2="7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <line x1="4" y1="12" x2="20" y2="12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <line x1="4" y1="17" x2="20" y2="17" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <line x1="6" y1="6" x2="18" y2="18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <line x1="18" y1="6" x2="6" y2="18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-bolt" viewBox="0 0 24 24">
+      <path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+    </symbol>
+
+    <symbol id="i-support" viewBox="0 0 24 24">
+      <path d="M4 12a8 8 0 0 1 16 0" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M4 12v4a2 2 0 0 0 2 2h2v-6H6a2 2 0 0 0-2 2z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M20 12v4a2 2 0 0 1-2 2h-2v-6h2a2 2 0 0 1 2 2z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M12 20h4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-file" viewBox="0 0 24 24">
+      <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M14 2v6h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M9 13h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M9 17h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-mail" viewBox="0 0 24 24">
+      <rect x="4" y="6" width="16" height="12" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M4 8l8 6 8-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+    </symbol>
+
+    <symbol id="i-life" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M12 7v10" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M7 12h10" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-map" viewBox="0 0 24 24">
+      <path d="M10 20l-6 2V6l6-2 4 2 6-2v16l-6 2-4-2z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M10 4v16" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M14 6v16" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-bell" viewBox="0 0 24 24">
+      <path d="M18 16H6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M8 16V10a4 4 0 0 1 8 0v6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M10 18a2 2 0 0 0 4 0" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-building" viewBox="0 0 24 24">
+      <rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M8 7h2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M8 11h2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M8 15h2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M14 7h2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M14 11h2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M14 15h2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-camera" viewBox="0 0 24 24">
+      <path d="M4 7h4l2-2h4l2 2h4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <circle cx="12" cy="13" r="3" fill="none" stroke="#FFFFFF" stroke-width="2" />
+    </symbol>
+
+    <symbol id="i-calendar" viewBox="0 0 24 24">
+      <rect x="4" y="5" width="16" height="16" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M16 3v4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M8 3v4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M4 10h16" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-users" viewBox="0 0 24 24">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <circle cx="9" cy="7" r="3" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M16 3.13a3 3 0 0 1 0 5.74" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-shield" viewBox="0 0 24 24">
+      <path d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M9 12l2 2 4-4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+  </svg>
+
   <header class="nav" role="banner">
     <div class="container nav-inner">
       <a class="brand" href="index.html" aria-label="Aller à l'accueil SmartCities">
-        <span class="logo" aria-hidden="true"></span>
-        <span>
-          SmartCities
+        <span class="logo" aria-hidden="true">
+          <img class="logo-img" src="../assets/logo.png" alt="SmartCities" />
+        </span>
+        <span class="brand-text">
+          <strong>SmartCities</strong>
           <small>Application citoyenne</small>
         </span>
       </a>
 
-      <nav class="links" aria-label="Navigation principale">
-        <a class="pill" href="support.html">Support</a>
-        <a class="pill" href="privacy.html">Confidentialité</a>
-        <a class="pill" href="terms.html">Conditions</a>
-        <a class="pill primary" href="https://apps.apple.com/app/idXXXXXXXXX" rel="noopener">App Store</a>
-      </nav>
+      <div class="nav-actions">
+        <nav class="links" aria-label="Navigation principale">
+          <a class="pill" href="support.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-support"></use></svg>
+            Support
+          </a>
+          <a class="pill" href="privacy.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg>
+            Confidentialité
+          </a>
+          <a class="pill" href="terms.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-file"></use></svg>
+            Conditions
+          </a>
+          <a class="pill primary" href="https://apps.apple.com/app/idXXXXXXXXX" rel="noopener noreferrer">
+             App Store
+          </a>
+        </nav>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="drawer"
+          aria-expanded="false"
+          id="menuBtn"
+        >
+          <svg class="ico xl" aria-hidden="true"><use href="#i-menu"></use></svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main class="container" role="main">
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer-head">
+      <div class="drawer-title">Navigation</div>
+      <button class="drawer-close" type="button" aria-label="Fermer le menu" id="closeBtn">
+        <svg class="ico xl" aria-hidden="true"><use href="#i-x"></use></svg>
+      </button>
+    </div>
+
+    <nav class="drawer-nav" aria-label="Navigation mobile">
+      <a class="pill" href="support.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-support"></use></svg>
+        Support
+      </a>
+      <a class="pill" href="privacy.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg>
+        Confidentialité
+      </a>
+      <a class="pill" href="terms.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-file"></use></svg>
+        Conditions
+      </a>
+      <a class="pill primary" href="https://apps.apple.com/app/idXXXXXXXXX" rel="noopener noreferrer">
+         App Store
+      </a>
+      <a class="pill" href="mailto:smartcities@ylapps.com?subject=Support%20SmartCities">
+        <svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg>
+        Contacter le support
+      </a>
+    </nav>
+
+    <div class="drawer-foot">
+      Centre d’assistance et documents légaux.
+    </div>
+  </aside>
+
+  <main class="container" role="main" id="main">
     <section class="hero" aria-label="Présentation SmartCities">
       <div class="hero-grid">
         <div class="hero-card">
           <span class="badge" aria-label="Plateforme">
-            ⚡ Signalements · Événements · Communauté
+            <svg class="ico sm" aria-hidden="true"><use href="#i-bolt"></use></svg>
+            Plateforme citoyenne · Signalements · Événements
           </span>
 
           <h1>Une ville plus réactive, une expérience plus simple.</h1>
+
           <p class="lead">
             SmartCities permet de <strong>signaler</strong> un problème (voirie, éclairage, propreté…),
-            <strong>suivre</strong> l’avancement, et <strong>participer</strong> à la vie locale.
+            de <strong>suivre</strong> l’avancement, et de <strong>participer</strong> à la vie locale.
           </p>
 
-          <div class="cta-row">
-            <a class="btn primary" href="https://apps.apple.com/app/idXXXXXXXXX" rel="noopener" aria-label="Ouvrir l'App Store">
-               Télécharger
-              <small>App Store</small>
+          <div class="cta-row" aria-label="Actions rapides">
+            <a class="btn primary" href="https://apps.apple.com/app/idXXXXXXXXX" rel="noopener noreferrer" aria-label="Ouvrir l'App Store">
+               Télécharger <small>App Store</small>
             </a>
+
             <a class="btn" href="support.html" aria-label="Accéder au support SmartCities">
-              🛟 Centre d’assistance
+              <svg class="ico" aria-hidden="true"><use href="#i-support"></use></svg>
+              Centre d’assistance
             </a>
+
             <a class="btn" href="privacy.html" aria-label="Lire la politique de confidentialité">
-              🔒 Confidentialité
+              <svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg>
+              Confidentialité
             </a>
           </div>
 
           <div class="callout" role="note" aria-label="Information urgence">
-            <div aria-hidden="true">🚨</div>
+            <div class="icoWrap" aria-hidden="true">
+              <svg class="ico lg"><use href="#i-life"></use></svg>
+            </div>
             <div>
-              <strong>Urgence ?</strong>
-              <p>SmartCities ne remplace pas les services d’urgence. En cas d’urgence, composez le <strong>112</strong>.</p>
+              <strong>Urgence</strong>
+              <p>SmartCities ne remplace pas les services d’urgence. En cas d’urgence, composez le 112.</p>
             </div>
           </div>
         </div>
 
         <aside class="side" aria-label="Encarts d'information">
           <div class="mini">
-            <h3>Ce que vous pouvez faire</h3>
-            <p>Créer des signalements, consulter la carte, suivre les événements et interagir avec la communauté.</p>
+            <h3>Fonctionnalités principales</h3>
+            <p>Signalements, carte, suivi des événements et interactions avec la communauté.</p>
             <div class="row" aria-label="Mots-clés">
-              <span class="tag">📍 Carte</span>
-              <span class="tag">🔔 Notifications</span>
-              <span class="tag">🏛️ Mairie</span>
+              <span class="tag">
+                <svg class="ico sm" aria-hidden="true"><use href="#i-map"></use></svg>
+                Carte
+              </span>
+              <span class="tag">
+                <svg class="ico sm" aria-hidden="true"><use href="#i-bell"></use></svg>
+                Notifications
+              </span>
+              <span class="tag">
+                <svg class="ico sm" aria-hidden="true"><use href="#i-building"></use></svg>
+                Mairie
+              </span>
             </div>
           </div>
 
           <div class="mini">
-            <h3>Support & signalement</h3>
-            <p>Un problème, un bug ou un contenu inapproprié ? Le support est centralisé et répond rapidement.</p>
+            <h3>Support</h3>
+            <p>Signaler un bug, un problème ou un contenu inapproprié. Réponse centralisée.</p>
             <div class="row">
-              <a class="pill" href="support.html" style="font-size:13px">Aller au support</a>
-              <a class="pill" href="mailto:smartcities@ylapps.com?subject=Support%20SmartCities" style="font-size:13px">Email</a>
+              <a class="pill" href="support.html" style="font-size:13px">
+                <svg class="ico sm" aria-hidden="true"><use href="#i-support"></use></svg>
+                Accéder au support
+              </a>
+              <a class="pill" href="mailto:smartcities@ylapps.com?subject=Support%20SmartCities" style="font-size:13px">
+                <svg class="ico sm" aria-hidden="true"><use href="#i-mail"></use></svg>
+                Email
+              </a>
             </div>
           </div>
         </aside>
@@ -353,38 +736,56 @@
     <section class="section" aria-label="Fonctionnalités">
       <div class="section-title">
         <h2>Fonctionnalités clés</h2>
-        <span>Une interface rapide, claire, et centrée sur l’action.</span>
+        <span>Interface rapide, claire, centrée sur l’action.</span>
       </div>
 
       <div class="grid">
         <article class="card">
-          <h3>📸 Signalements avec photo</h3>
+          <h3>
+            <svg class="ico" aria-hidden="true"><use href="#i-camera"></use></svg>
+            Signalements avec photo
+          </h3>
           <p>Créez un signalement précis (description + photo) et retrouvez-le facilement dans vos suivis.</p>
         </article>
 
         <article class="card">
-          <h3>🗺️ Carte interactive</h3>
+          <h3>
+            <svg class="ico" aria-hidden="true"><use href="#i-map"></use></svg>
+            Carte interactive
+          </h3>
           <p>Visualisez ce qui se passe dans votre ville et filtrez par catégories et zones.</p>
         </article>
 
         <article class="card">
-          <h3>🔔 Notifications utiles</h3>
+          <h3>
+            <svg class="ico" aria-hidden="true"><use href="#i-bell"></use></svg>
+            Notifications utiles
+          </h3>
           <p>Recevez les mises à jour importantes : statut, réponses, actualités, activité locale.</p>
         </article>
 
         <article class="card">
-          <h3>📅 Événements</h3>
+          <h3>
+            <svg class="ico" aria-hidden="true"><use href="#i-calendar"></use></svg>
+            Événements
+          </h3>
           <p>Consultez les événements à venir et gardez une vision claire des rendez-vous de votre ville.</p>
         </article>
 
         <article class="card">
-          <h3>🧭 Communauté</h3>
+          <h3>
+            <svg class="ico" aria-hidden="true"><use href="#i-users"></use></svg>
+            Communauté
+          </h3>
           <p>Échangez, suivez des profils, et restez informé des publications pertinentes.</p>
         </article>
 
         <article class="card">
-          <h3>🛡️ Sécurité & modération</h3>
-          <p>Signalement et blocage intégrés. Tolérance zéro pour le contenu choquant ou illégal.</p>
+          <h3>
+            <svg class="ico" aria-hidden="true"><use href="#i-shield"></use></svg>
+            Sécurité & modération
+          </h3>
+          <p>Signalement et blocage intégrés. Traitement prioritaire du contenu illicite.</p>
         </article>
       </div>
     </section>
@@ -403,6 +804,48 @@
 
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
+
+    const root = document.documentElement;
+    const btn = document.getElementById("menuBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    const backdrop = document.getElementById("backdrop");
+    const drawer = document.getElementById("drawer");
+
+    let lastFocus = null;
+
+    function setOpen(open) {
+      if (open) {
+        lastFocus = document.activeElement;
+        root.classList.add("menu-open");
+        btn.setAttribute("aria-expanded", "true");
+        backdrop.setAttribute("aria-hidden", "false");
+        const firstLink = drawer.querySelector("a, button");
+        setTimeout(() => firstLink && firstLink.focus(), 50);
+      } else {
+        root.classList.remove("menu-open");
+        btn.setAttribute("aria-expanded", "false");
+        backdrop.setAttribute("aria-hidden", "true");
+        if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+      }
+      console.log("📝 [WEB] menu =", { open });
+    }
+
+    btn.addEventListener("click", () => setOpen(true));
+    closeBtn.addEventListener("click", () => setOpen(false));
+    backdrop.addEventListener("click", () => setOpen(false));
+
+    document.addEventListener("keydown", (e) => {
+      if (!root.classList.contains("menu-open")) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+      }
+    });
+
+    drawer.addEventListener("click", (e) => {
+      const t = e.target;
+      if (t && t.closest && t.closest("a")) setOpen(false);
+    });
   </script>
 </body>
 </html>

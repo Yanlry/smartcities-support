@@ -2,164 +2,504 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>Conditions d’utilisation — SmartCities</title>
   <meta name="description" content="Conditions d’utilisation SmartCities : règles, contenus interdits, signalement et retrait." />
   <meta name="theme-color" content="#0B1220" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#0B1220;
+      --bg:#0B1220;              /* ✅ pas de dégradé */
       --panel:#0F172A;
       --text:#E5E7EB;
       --muted:#94A3B8;
+
       --line:rgba(255,255,255,.10);
+      --line2:rgba(255,255,255,.14);
+
       --shadow: 0 18px 50px rgba(0,0,0,.45);
       --shadow2: 0 10px 30px rgba(0,0,0,.35);
+
       --radius: 18px;
       --radius2: 24px;
-      --accent1:#3B82F6;
-      --accent2:#8B5CF6;
+
+      --accent:#3B82F6;
+      --accentSoft: rgba(59,130,246,.14);
+
       --danger:#EF4444;
+      --dangerSoft: rgba(239,68,68,.10);
+
       --warn:#F59E0B;
+      --warnSoft: rgba(245,158,11,.10);
+
       --ok:#10B981;
+      --okSoft: rgba(16,185,129,.10);
+
+      --container: 1100px;
+      --tap: 44px;
+      --navH: 64px;
+      --focus: 0 0 0 4px rgba(59,130,246,.25);
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(1100px 650px at 20% -10%, rgba(59,130,246,.32), transparent 60%),
-        radial-gradient(900px 550px at 90% 10%, rgba(139,92,246,.26), transparent 55%),
-        var(--bg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
     }
+
     a{color:inherit; text-decoration:none}
-    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+    img{max-width:100%; height:auto; display:block}
+    button{font-family:inherit}
+    strong{font-weight:900}
+
+    .container{max-width: var(--container); margin:0 auto; padding:0 16px}
+    @media (min-width: 720px){ .container{padding:0 20px} }
+
+    /* ========= A11Y ========= */
+    .skip{
+      position:absolute;
+      left:12px;
+      top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(2,6,23,.95);
+      border:1px solid var(--line2);
+      transform: translateY(-200%);
+      transition: transform .15s ease;
+      z-index: 9999;
+    }
+    .skip:focus{transform: translateY(0); outline:none; box-shadow: var(--focus)}
+    :focus{outline:none}
+    :focus-visible{box-shadow: var(--focus); border-radius: 12px}
+
+    /* ========= Icons ========= */
+    .ico{width:18px;height:18px; display:inline-block; flex:0 0 auto}
+    .ico.sm{width:16px;height:16px}
+    .ico.lg{width:20px;height:20px}
+    .ico.xl{width:22px;height:22px}
+
+    /* ========= NAV (mobile-first) ========= */
     .nav{
       position:sticky; top:0; z-index:50;
       backdrop-filter: blur(10px);
-      background: rgba(11,18,32,.72);
+      background: rgba(11,18,32,.82);
       border-bottom: 1px solid var(--line);
+      padding-top: env(safe-area-inset-top);
     }
-    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:14px}
-    .brand{display:flex; align-items:center; gap:12px; font-weight:800}
-    .logo{width:38px; height:38px; border-radius:12px; background: linear-gradient(135deg, var(--accent1), var(--accent2))}
-    .links{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px; border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(15,23,42,.45);
-      font-weight:700; font-size:14px;
-    }
-    .pill:hover{background: rgba(15,23,42,.65)}
-    .pill.primary{
-      border:none;
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      box-shadow: 0 14px 30px rgba(59,130,246,.18);
+    .nav-inner{
+      min-height: var(--navH);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
 
-    main{padding:32px 0 50px}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 0;
+    }
+
+    /* ✅ LOGO (sans background) */
+    .logo{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .logo-img{width:100%; height:100%; object-fit: cover}
+
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+      min-width: 0;
+    }
+    .brand-text strong{
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size: 15px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-text small{
+      display:block;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:.2px;
+      font-size: 12px;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-actions{display:flex; align-items:center; gap:10px}
+
+    .nav-toggle{
+      width: var(--tap);
+      height: var(--tap);
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.45);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      color: var(--text);
+    }
+    .nav-toggle:hover{transform: translateY(-1px); background: rgba(15,23,42,.65); border-color: rgba(255,255,255,.18)}
+
+    .links{display:none; gap:10px; align-items:center}
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.45);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      color:var(--text);
+      font-weight:900;
+      font-size:14px;
+      line-height: 1;
+      white-space: nowrap;
+      min-height: 38px;
+    }
+    .pill:hover{transform: translateY(-1px); background: rgba(15,23,42,.65); border-color: rgba(255,255,255,.18)}
+    .pill.primary{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(59,130,246,.92);
+      box-shadow: 0 14px 30px rgba(59,130,246,.14);
+    }
+
+    @media (min-width: 900px){
+      .nav-toggle{display:none}
+      .links{display:flex}
+    }
+
+    /* ========= Drawer menu (mobile) ========= */
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(2,6,23,.60);
+      backdrop-filter: blur(6px);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+      z-index: 80;
+    }
+    .drawer{
+      position:fixed;
+      top: env(safe-area-inset-top);
+      right:0;
+      width: min(92vw, 360px);
+      height: calc(100vh - env(safe-area-inset-top));
+      background: rgba(15,23,42,.94);
+      border-left: 1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      transform: translateX(110%);
+      transition: transform .22s ease;
+      z-index: 90;
+      display:flex;
+      flex-direction:column;
+      padding: 14px;
+    }
+    .drawer-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 8px 6px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .drawer-title{font-weight:900; letter-spacing:.2px}
+    .drawer-close{
+      width: var(--tap);
+      height: var(--tap);
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(2,6,23,.35);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      color: var(--text);
+    }
+    .drawer-nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding: 14px 6px;
+    }
+    .drawer .pill{
+      width:100%;
+      justify-content:center;
+      padding: 14px 12px;
+      border-radius: 16px;
+      font-size: 15px;
+      min-height: 46px;
+    }
+    .drawer-foot{
+      margin-top:auto;
+      padding: 12px 6px 6px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .menu-open .backdrop{opacity:1; pointer-events:auto}
+    .menu-open .drawer{transform: translateX(0)}
+
+    /* ========= MAIN / HERO ========= */
+    main{padding: 18px 0 22px}
+
     .hero{
       border-radius: var(--radius2);
       border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,23,42,.78), rgba(15,23,42,.52));
+      background: rgba(15,23,42,.62);
       box-shadow: var(--shadow);
-      padding:26px;
+      padding: 18px;
       position:relative;
       overflow:hidden;
     }
+    @media (min-width: 720px){ .hero{padding: 26px} }
     .hero:before{
       content:"";
-      position:absolute; inset:0;
+      position:absolute;
+      left:0; right:0; top:0;
       height:4px;
-      background: linear-gradient(90deg, rgba(59,130,246,.75), rgba(139,92,246,.75));
-      opacity:.65;
+      background: rgba(239,68,68,.75);
+      opacity:.85;
     }
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px; border-radius:999px;
-      background: rgba(239,68,68,.10);
-      border:1px solid rgba(239,68,68,.22);
-      color:#FECACA;
-      font-weight:800;
-      font-size:13px;
-    }
-    h1{margin:12px 0 8px; font-size:30px; letter-spacing:-.6px}
-    .lead{margin:0; color:var(--muted); line-height:1.7; max-width:85ch}
-    .meta{margin-top:12px; color: rgba(148,163,184,.95); font-size:13px; font-weight:700}
 
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: var(--dangerSoft);
+      border: 1px solid rgba(239,68,68,.22);
+      color: #FECACA;
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size: 13px;
+    }
+
+    h1{
+      margin: 12px 0 8px;
+      font-size: clamp(24px, 4.6vw, 32px);
+      letter-spacing: -0.7px;
+      line-height: 1.08;
+    }
+    .lead{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+      max-width: 90ch;
+      font-size: 15px;
+    }
+    @media (min-width: 720px){ .lead{font-size: 16px} }
+
+    .meta{
+      margin-top:12px;
+      color: rgba(148,163,184,.95);
+      font-size: 13px;
+      font-weight: 800;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    /* ========= Layout (mobile-first) ========= */
     .layout{
-      margin-top:16px;
-      display:grid; gap:14px;
-      grid-template-columns: 280px 1fr;
+      margin-top: 14px;
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
       align-items:start;
     }
-    @media (max-width: 980px){
-      .layout{grid-template-columns:1fr}
+    @media (min-width: 980px){
+      .layout{
+        grid-template-columns: 320px 1fr;
+        gap: 14px;
+      }
     }
 
+    /* ✅ TOC: chips scrollables mobile */
     .toc{
-      position:sticky; top:84px;
       border-radius: var(--radius);
       border:1px solid var(--line);
       background: rgba(15,23,42,.55);
       box-shadow: var(--shadow2);
-      padding:14px;
+      padding: 14px;
     }
-    .toc h2{margin:0 0 10px; font-size:14px; letter-spacing:.2px}
-    .toc a{
-      display:block;
-      padding:10px 10px;
-      border-radius: 12px;
-      color: var(--muted);
-      font-weight:800;
-      font-size:13px;
+    @media (min-width: 980px){
+      .toc{position: sticky; top: calc(var(--navH) + env(safe-area-inset-top) + 14px)}
     }
-    .toc a:hover{background: rgba(2,6,23,.35); color: var(--text)}
 
+    .toc-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .toc-title h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: .2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .toc-links{
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding-bottom: 4px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (min-width: 980px){
+      .toc-links{display:block; overflow:visible; padding-bottom:0}
+    }
+
+    .toc a{
+      flex: 0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: var(--muted);
+      font-weight:900;
+      font-size: 13px;
+      border:1px solid rgba(255,255,255,.06);
+      background: rgba(2,6,23,.18);
+      scroll-snap-align: start;
+      white-space: nowrap;
+      transition: background .12s ease, color .12s ease, border-color .12s ease, transform .12s ease;
+      min-height: 40px;
+    }
+    .toc a:hover{
+      background: rgba(2,6,23,.35);
+      color: var(--text);
+      border-color: rgba(255,255,255,.10);
+      transform: translateY(-1px);
+    }
+    @media (min-width: 980px){
+      .toc a{
+        display:flex;
+        width: 100%;
+        justify-content:flex-start;
+        white-space: normal;
+      }
+    }
+
+    /* ========= Content ========= */
     .content{
       border-radius: var(--radius);
       border:1px solid var(--line);
       background: rgba(15,23,42,.55);
       box-shadow: var(--shadow2);
-      padding:18px;
+      padding: 16px;
     }
+    @media (min-width: 720px){ .content{padding: 18px} }
+
     .section{
-      padding:14px 0;
+      padding: 14px 0;
       border-top: 1px solid rgba(255,255,255,.06);
+      scroll-margin-top: calc(var(--navH) + env(safe-area-inset-top) + 16px);
     }
     .section:first-child{border-top:none; padding-top:0}
-    .section h2{margin:0 0 8px; font-size:17px; letter-spacing:-.2px}
-    .section p{margin:0 0 10px; color: var(--muted); line-height:1.75; font-size:14px}
-    .section ul{margin:8px 0 0 18px; color: var(--muted); line-height:1.75; font-size:14px}
-    .section li{margin:6px 0}
 
-    .danger{
-      border-radius: 16px;
-      border:1px solid rgba(239,68,68,.22);
-      background: rgba(239,68,68,.10);
-      padding:14px;
-      color:#FECACA;
-      font-size:14px;
-      line-height:1.65;
-      margin-top:10px;
+    .section h2{
+      margin:0 0 10px;
+      font-size: 16px;
+      letter-spacing: -.2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
-    .info{
+
+    .section p{
+      margin:0 0 10px;
+      color: var(--muted);
+      line-height: 1.78;
+      font-size: 14px;
+    }
+
+    .section ul{
+      margin: 8px 0 0 18px;
+      color: var(--muted);
+      line-height: 1.78;
+      font-size: 14px;
+    }
+    .section li{margin: 6px 0}
+
+    .callout{
+      margin-top: 10px;
       border-radius: 16px;
-      border:1px solid rgba(59,130,246,.22);
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.7;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      border: 1px solid transparent;
+    }
+    .callout .icoWrap{
+      width: 30px;
+      height: 30px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 12px;
+      flex: 0 0 auto;
+    }
+
+    .callout.info{
+      border-color: rgba(59,130,246,.22);
       background: rgba(59,130,246,.10);
-      padding:14px;
-      color:#CFE3FF;
-      font-size:14px;
-      line-height:1.65;
-      margin-top:10px;
+      color: #CFE3FF;
     }
+    .callout.info .icoWrap{
+      background: rgba(59,130,246,.14);
+      border: 1px solid rgba(59,130,246,.22);
+    }
+
+    .callout.danger{
+      border-color: rgba(239,68,68,.22);
+      background: rgba(239,68,68,.10);
+      color: #FECACA;
+    }
+    .callout.danger .icoWrap{
+      background: rgba(239,68,68,.14);
+      border: 1px solid rgba(239,68,68,.22);
+    }
+
     .link{
       font-weight:900;
       color: var(--text);
@@ -170,97 +510,327 @@
     }
     .link:hover{opacity:1}
 
+    /* ========= Footer ========= */
     footer{
       border-top: 1px solid var(--line);
       background: rgba(11,18,32,.55);
-      padding:22px 0;
+      padding: 18px 0;
       color: var(--muted);
-      font-size:14px;
+      font-size: 14px;
       margin-top: 20px;
     }
-    .foot{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap}
+    .foot{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
     .foot a{color: var(--text); font-weight:900; opacity:.92}
     .foot a:hover{opacity:1}
+
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto!important}
+      .pill,.nav-toggle,.toc a{transition:none}
+    }
   </style>
 </head>
 
 <body>
+  <a class="skip" href="#main">Aller au contenu principal</a>
+
+  <!-- ===== SVG ICONS (stroke/fill forcés BLANC) ===== -->
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <line x1="4" y1="7" x2="20" y2="7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <line x1="4" y1="12" x2="20" y2="12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <line x1="4" y1="17" x2="20" y2="17" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <line x1="6" y1="6" x2="18" y2="18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <line x1="18" y1="6" x2="6" y2="18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-life" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <path d="M12 8v8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <path d="M8 12h8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-file" viewBox="0 0 24 24">
+      <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M14 2v6h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M9 13h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M9 17h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-mail" viewBox="0 0 24 24">
+      <rect x="4" y="6" width="16" height="12" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M4 8l8 6 8-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+    </symbol>
+
+    <symbol id="i-alert" viewBox="0 0 24 24">
+      <path d="M12 3l10 18H2L12 3z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M12 9v5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <path d="M12 17h.01" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-info" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <path d="M12 11v6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <path d="M12 7h.01" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-shield" viewBox="0 0 24 24">
+      <path d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M9 12l2 2 4-4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+
+    <symbol id="i-stack" viewBox="0 0 24 24">
+      <path d="M12 2l9 5-9 5-9-5 9-5z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M3 12l9 5 9-5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M3 17l9 5 9-5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-book" viewBox="0 0 24 24">
+      <path d="M4 19a2 2 0 0 0 2 2h12V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2z" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <path d="M8 5v16" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-image" viewBox="0 0 24 24">
+      <rect x="4" y="5" width="16" height="14" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <path d="M8 14l2-2 3 3 3-4 4 6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="9" cy="9" r="1" fill="#FFFFFF"/>
+    </symbol>
+
+    <symbol id="i-ban" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <path d="M7 7l10 10" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-flag" viewBox="0 0 24 24">
+      <path d="M6 3v18" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <path d="M6 4h11l-2 4 2 4H6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-link" viewBox="0 0 24 24">
+      <path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+
+    <symbol id="i-pause" viewBox="0 0 24 24">
+      <rect x="7" y="6" width="3" height="12" rx="1" fill="#FFFFFF"/>
+      <rect x="14" y="6" width="3" height="12" rx="1" fill="#FFFFFF"/>
+      <rect x="5.5" y="4.5" width="13" height="15" rx="3" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".0"/>
+    </symbol>
+
+    <symbol id="i-refresh" viewBox="0 0 24 24">
+      <path d="M20 12a8 8 0 1 1-2.3-5.7" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      <path d="M20 4v6h-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <path d="M12 7v6l4 2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
   <header class="nav" role="banner">
     <div class="container nav-inner">
       <a class="brand" href="index.html" aria-label="Aller à l'accueil SmartCities">
-        <span class="logo" aria-hidden="true"></span>
-        <span>SmartCities</span>
+        <span class="logo" aria-hidden="true">
+          <img class="logo-img" src="../assets/logo.png" alt="SmartCities" />
+        </span>
+        <span class="brand-text">
+          <strong>SmartCities</strong>
+          <small>Conditions</small>
+        </span>
       </a>
 
-      <nav class="links" aria-label="Navigation principale">
-        <a class="pill" href="support.html">Support</a>
-        <a class="pill" href="privacy.html">Confidentialité</a>
-        <a class="pill primary" href="mailto:smartcities@ylapps.com?subject=Question%20-%20Conditions%20SmartCities">Contacter</a>
-      </nav>
+      <div class="nav-actions">
+        <nav class="links" aria-label="Navigation principale">
+          <a class="pill" href="support.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-life"></use></svg>
+            Support
+          </a>
+          <a class="pill" href="privacy.html">
+            <svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg>
+            Confidentialité
+          </a>
+          <a class="pill primary" href="mailto:smartcities@ylapps.com?subject=Question%20-%20Conditions%20SmartCities">
+            <svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg>
+            Contacter
+          </a>
+        </nav>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="drawer"
+          aria-expanded="false"
+          id="menuBtn"
+        >
+          <svg class="ico xl" aria-hidden="true"><use href="#i-menu"></use></svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main class="container" role="main">
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer-head">
+      <div class="drawer-title">Navigation</div>
+      <button class="drawer-close" type="button" aria-label="Fermer le menu" id="closeBtn">
+        <svg class="ico xl" aria-hidden="true"><use href="#i-x"></use></svg>
+      </button>
+    </div>
+
+    <nav class="drawer-nav" aria-label="Navigation mobile">
+      <a class="pill" href="support.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-life"></use></svg>
+        Support
+      </a>
+      <a class="pill" href="privacy.html">
+        <svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg>
+        Confidentialité
+      </a>
+      <a class="pill primary" href="mailto:smartcities@ylapps.com?subject=Question%20-%20Conditions%20SmartCities">
+        <svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg>
+        Contacter
+      </a>
+    </nav>
+
+    <div class="drawer-foot">
+      Règles d’utilisation et modération de SmartCities.
+    </div>
+  </aside>
+
+  <main class="container" role="main" id="main">
     <section class="hero" aria-label="Conditions d'utilisation">
-      <span class="badge">⚠️ Règles d’utilisation & modération</span>
+      <span class="badge">
+        <svg class="ico sm" aria-hidden="true"><use href="#i-alert"></use></svg>
+        Règles d’utilisation & modération
+      </span>
+
       <h1>Conditions d’utilisation</h1>
       <p class="lead">
         Ces conditions encadrent l’usage de SmartCities : publication de contenus, règles de modération,
         signalement et retrait. En utilisant l’app, vous acceptez ces conditions.
       </p>
-      <div class="meta">Dernière mise à jour : 25 janvier 2026</div>
+
+      <div class="meta">
+        <svg class="ico sm" aria-hidden="true"><use href="#i-clock"></use></svg>
+        Dernière mise à jour : 25 janvier 2026
+      </div>
     </section>
 
     <section class="layout" aria-label="Contenu">
       <aside class="toc" aria-label="Sommaire">
-        <h2>Sommaire</h2>
-        <a href="#objet">1) Objet</a>
-        <a href="#ugc">2) Propriété des contenus & licence UGC</a>
-        <a href="#interdits">3) Contenus interdits</a>
-        <a href="#takedown">4) Signalement & retrait</a>
-        <a href="#tiers">5) Services tiers</a>
-        <a href="#liens">6) Liens externes</a>
-        <a href="#suspension">7) Suspension</a>
-        <a href="#modifs">8) Modifications</a>
+        <div class="toc-title">
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-stack"></use></svg>
+            Sommaire
+          </h2>
+        </div>
+
+        <div class="toc-links" id="tocLinks">
+          <a href="#objet">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-book"></use></svg>
+            1) Objet
+          </a>
+          <a href="#ugc">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-image"></use></svg>
+            2) Contenus & licence UGC
+          </a>
+          <a href="#interdits">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-ban"></use></svg>
+            3) Contenus interdits
+          </a>
+          <a href="#takedown">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-flag"></use></svg>
+            4) Signalement & retrait
+          </a>
+          <a href="#tiers">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-shield"></use></svg>
+            5) Services tiers
+          </a>
+          <a href="#liens">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-link"></use></svg>
+            6) Liens externes
+          </a>
+          <a href="#suspension">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-pause"></use></svg>
+            7) Suspension
+          </a>
+          <a href="#modifs">
+            <svg class="ico sm" aria-hidden="true"><use href="#i-refresh"></use></svg>
+            8) Modifications
+          </a>
+        </div>
       </aside>
 
       <article class="content">
         <div class="section" id="objet">
-          <h2>1) Objet</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-book"></use></svg>
+            1) Objet
+          </h2>
           <p>
             SmartCities permet de consulter et publier des contenus locaux (signalements, photos, messages) et d’afficher une carte.
           </p>
         </div>
 
         <div class="section" id="ugc">
-          <h2>2) Propriété des contenus et licence UGC</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-image"></use></svg>
+            2) Propriété des contenus et licence UGC
+          </h2>
           <p>
             Vous conservez vos droits sur les contenus que vous publiez. Vous concédez à SmartCities une licence mondiale,
             non exclusive et gratuite pour héberger, stocker, reproduire, afficher et distribuer ces contenus dans l’app
             et ses services techniques, pendant la durée nécessaire au service et aux obligations légales.
           </p>
-          <div class="info">
-            <strong>ℹ️</strong> Cette licence sert uniquement à opérer le service (affichage, stockage, modération, transmission technique).
+
+          <div class="callout info" role="note" aria-label="Information licence">
+            <div class="icoWrap" aria-hidden="true">
+              <svg class="ico lg"><use href="#i-info"></use></svg>
+            </div>
+            <div>
+              <strong>Information :</strong> cette licence sert uniquement à opérer le service (affichage, stockage, modération, transmission technique).
+            </div>
           </div>
         </div>
 
         <div class="section" id="interdits">
-          <h2>3) Contenus interdits</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-ban"></use></svg>
+            3) Contenus interdits
+          </h2>
           <ul>
             <li>Atteinte aux droits d’auteur, marques, droits à l’image et à la vie privée.</li>
             <li>Diffamation, incitation à la haine, contenus illicites, pornographie, exploitation de mineurs.</li>
             <li>Spam, fraude, malware, coordonnées privées sans consentement.</li>
           </ul>
-          <div class="danger">
-            <strong>Tolérance zéro :</strong> le contenu choquant, abusif ou illégal peut être retiré et entraîner la suspension du compte.
+
+          <div class="callout danger" role="note" aria-label="Tolérance zéro">
+            <div class="icoWrap" aria-hidden="true">
+              <svg class="ico lg"><use href="#i-alert"></use></svg>
+            </div>
+            <div>
+              <strong>Tolérance zéro :</strong> le contenu choquant, abusif ou illégal peut être retiré et entraîner la suspension du compte.
+            </div>
           </div>
         </div>
 
         <div class="section" id="takedown">
-          <h2>4) Signalement et retrait</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-flag"></use></svg>
+            4) Signalement et retrait
+          </h2>
           <p>
             Pour signaler une atteinte à des droits ou un contenu illicite, écrivez à
-            <a class="link" href="mailto:smartcities@ylapps.com?subject=Signalement%20-%20SmartCities">smartcities@ylapps.com</a>
+            <a class="link" href="mailto:smartcities@ylapps.com?subject=Signalement%20-%20SmartCities"> smartcities@ylapps.com</a>
             avec : URL/ID, description, preuves (si applicable) et vos coordonnées.
           </p>
           <p>
@@ -270,7 +840,10 @@
         </div>
 
         <div class="section" id="tiers">
-          <h2>5) Contenus et services tiers</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-shield"></use></svg>
+            5) Contenus et services tiers
+          </h2>
           <p>
             L’app peut afficher des contenus tiers (ex : cartes). Ces éléments restent la propriété de leurs titulaires et sont soumis à leurs licences.
           </p>
@@ -282,17 +855,26 @@
         </div>
 
         <div class="section" id="liens">
-          <h2>6) Liens externes</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-link"></use></svg>
+            6) Liens externes
+          </h2>
           <p>Les liens vers des sites tiers sont fournis pour convenance. SmartCities ne contrôle pas ces contenus.</p>
         </div>
 
         <div class="section" id="suspension">
-          <h2>7) Suspension</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-pause"></use></svg>
+            7) Suspension
+          </h2>
           <p>Tout manquement peut entraîner suppression de contenus, limitation d’accès ou suspension de compte.</p>
         </div>
 
         <div class="section" id="modifs">
-          <h2>8) Modifications</h2>
+          <h2>
+            <svg class="ico sm" aria-hidden="true"><use href="#i-refresh"></use></svg>
+            8) Modifications
+          </h2>
           <p>Nous pouvons modifier ces conditions. La version en ligne fait foi.</p>
         </div>
       </article>
@@ -312,6 +894,75 @@
 
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
+
+    // ✅ Menu mobile
+    const root = document.documentElement;
+    const btn = document.getElementById("menuBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    const backdrop = document.getElementById("backdrop");
+    const drawer = document.getElementById("drawer");
+
+    let lastFocus = null;
+
+    function setOpen(open) {
+      if (open) {
+        lastFocus = document.activeElement;
+        root.classList.add("menu-open");
+        btn.setAttribute("aria-expanded", "true");
+        backdrop.setAttribute("aria-hidden", "false");
+        const firstLink = drawer.querySelector("a, button");
+        setTimeout(() => firstLink && firstLink.focus(), 50);
+      } else {
+        root.classList.remove("menu-open");
+        btn.setAttribute("aria-expanded", "false");
+        backdrop.setAttribute("aria-hidden", "true");
+        if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+      }
+      console.log("📝 [WEB] menu =", { open });
+    }
+
+    if (btn) btn.addEventListener("click", () => setOpen(true));
+    if (closeBtn) closeBtn.addEventListener("click", () => setOpen(false));
+    if (backdrop) backdrop.addEventListener("click", () => setOpen(false));
+
+    document.addEventListener("keydown", (e) => {
+      if (!root.classList.contains("menu-open")) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+      }
+    });
+
+    if (drawer) {
+      drawer.addEventListener("click", (e) => {
+        const t = e.target;
+        if (t && t.closest && t.closest("a")) setOpen(false);
+      });
+    }
+
+    // ✅ Sommaire actif (optionnel)
+    const sections = Array.from(document.querySelectorAll(".section[id]"));
+    const tocLinks = Array.from(document.querySelectorAll("#tocLinks a"));
+
+    function setActive(id){
+      tocLinks.forEach(a => {
+        const on = (a.getAttribute("href") || "") === ("#" + id);
+        a.style.color = on ? "var(--text)" : "var(--muted)";
+        a.style.borderColor = on ? "rgba(255,255,255,.14)" : "rgba(255,255,255,.06)";
+        a.style.background = on ? "rgba(2,6,23,.35)" : "rgba(2,6,23,.18)";
+      });
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      setActive(visible.target.id);
+      console.log("📝 [WEB] toc_active =", { id: visible.target.id });
+    }, { rootMargin: "-30% 0px -60% 0px", threshold: [0.02, 0.05, 0.1, 0.2] });
+
+    sections.forEach(s => io.observe(s));
   </script>
 </body>
 </html>
