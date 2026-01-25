@@ -13,11 +13,11 @@
 
   <style>
     :root{
-      --bg:#0B1220;              /* ✅ pas de dégradé */
+      /* ✅ THEME SOMBRE (aligné index.html) */
+      --bg:#0B1220;
       --panel:#0F172A;
       --text:#E5E7EB;
       --muted:#94A3B8;
-
       --line:rgba(255,255,255,.10);
       --line2:rgba(255,255,255,.14);
 
@@ -31,22 +31,24 @@
       --accentSoft: rgba(59,130,246,.14);
 
       --danger:#EF4444;
-      --dangerSoft: rgba(239,68,68,.10);
-
-      --warn:#F59E0B;
-      --warnSoft: rgba(245,158,11,.10);
-
-      --ok:#10B981;
-      --okSoft: rgba(16,185,129,.10);
+      --dangerSoft: rgba(239,68,68,.14);
 
       --container: 1100px;
       --tap: 44px;
       --navH: 64px;
       --focus: 0 0 0 4px rgba(59,130,246,.25);
+
+      --iconWhite: #FFFFFF;
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
+    *::before,*::after{box-sizing:border-box}
+    html,body{
+      height:100%;
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden; /* ✅ stop scroll horizontal */
+    }
     body{
       margin:0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
@@ -55,14 +57,24 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: geometricPrecision;
+      overflow-x:hidden; /* ✅ stop scroll horizontal */
     }
+
+    /* ✅ flex children can shrink (important on mobile) */
+    .nav-inner > * , .layout > * , .toc-links, .meta, .foot { min-width:0; }
 
     a{color:inherit; text-decoration:none}
     img{max-width:100%; height:auto; display:block}
     button{font-family:inherit}
     strong{font-weight:900}
 
-    .container{max-width: var(--container); margin:0 auto; padding:0 16px}
+    /* ✅ global safe wrapping for long strings (emails/urls) */
+    .content, .section p, .section li, footer, footer a, .link{
+      overflow-wrap:anywhere;
+      word-break: break-word;
+    }
+
+    .container{max-width: var(--container); width:100%; margin:0 auto; padding:0 16px}
     @media (min-width: 720px){ .container{padding:0 20px} }
 
     /* ========= A11Y ========= */
@@ -77,6 +89,8 @@
       transform: translateY(-200%);
       transition: transform .15s ease;
       z-index: 9999;
+      color: var(--text);
+      box-shadow: var(--shadow2);
     }
     .skip:focus{transform: translateY(0); outline:none; box-shadow: var(--focus)}
     :focus{outline:none}
@@ -118,6 +132,8 @@
       border-radius:12px;
       overflow:hidden;
       flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,23,42,.35);
     }
     .logo-img{width:100%; height:100%; object-fit: cover}
 
@@ -138,7 +154,7 @@
     .brand-text small{
       display:block;
       color:var(--muted);
-      font-weight:600;
+      font-weight:700;
       letter-spacing:.2px;
       font-size: 12px;
       margin-top: 2px;
@@ -162,7 +178,11 @@
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
       color: var(--text);
     }
-    .nav-toggle:hover{transform: translateY(-1px); background: rgba(15,23,42,.65); border-color: rgba(255,255,255,.18)}
+    .nav-toggle:hover{
+      transform: translateY(-1px);
+      background: rgba(15,23,42,.65);
+      border-color: rgba(255,255,255,.18);
+    }
 
     .links{display:none; gap:10px; align-items:center}
 
@@ -183,11 +203,21 @@
       white-space: nowrap;
       min-height: 38px;
     }
-    .pill:hover{transform: translateY(-1px); background: rgba(15,23,42,.65); border-color: rgba(255,255,255,.18)}
+    .pill:hover{
+      transform: translateY(-1px);
+      background: rgba(15,23,42,.65);
+      border-color: rgba(255,255,255,.18);
+    }
     .pill.primary{
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(59,130,246,.92);
       box-shadow: 0 14px 30px rgba(59,130,246,.14);
+      color:#fff;
+    }
+    /* ✅ page active */
+    .pill[aria-current="page"]{
+      border-color: rgba(255,255,255,.14);
+      background: rgba(59,130,246,.16);
     }
 
     @media (min-width: 900px){
@@ -221,6 +251,7 @@
       display:flex;
       flex-direction:column;
       padding: 14px;
+      color: var(--text);
     }
     .drawer-head{
       display:flex;
@@ -256,6 +287,8 @@
       border-radius: 16px;
       font-size: 15px;
       min-height: 46px;
+      white-space: normal; /* ✅ allow wrap inside drawer */
+      text-align:center;
     }
     .drawer-foot{
       margin-top:auto;
@@ -280,6 +313,7 @@
       padding: 18px;
       position:relative;
       overflow:hidden;
+      max-width:100%;
     }
     @media (min-width: 720px){ .hero{padding: 26px} }
     .hero:before{
@@ -287,8 +321,8 @@
       position:absolute;
       left:0; right:0; top:0;
       height:4px;
-      background: rgba(239,68,68,.75);
-      opacity:.85;
+      background: rgba(239,68,68,.85);
+      opacity:.95;
     }
 
     .badge{
@@ -303,6 +337,8 @@
       font-weight:900;
       letter-spacing:.2px;
       font-size: 13px;
+      max-width:100%;
+      flex-wrap:wrap;
     }
 
     h1{
@@ -338,6 +374,7 @@
       gap: 12px;
       grid-template-columns: 1fr;
       align-items:start;
+      max-width:100%;
     }
     @media (min-width: 980px){
       .layout{
@@ -346,13 +383,15 @@
       }
     }
 
-    /* ✅ TOC: chips scrollables mobile */
+    /* ✅ TOC: chips scrollables mobile (inside its box only) */
     .toc{
       border-radius: var(--radius);
       border:1px solid var(--line);
       background: rgba(15,23,42,.55);
       box-shadow: var(--shadow2);
       padding: 14px;
+      overflow:hidden; /* ✅ contain horizontal scroller */
+      max-width:100%;
     }
     @media (min-width: 980px){
       .toc{position: sticky; top: calc(var(--navH) + env(safe-area-inset-top) + 14px)}
@@ -381,6 +420,8 @@
       padding-bottom: 4px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
+      max-width:100%;
+      overscroll-behavior-x: contain;
     }
     @media (min-width: 980px){
       .toc-links{display:block; overflow:visible; padding-bottom:0}
@@ -396,17 +437,18 @@
       color: var(--muted);
       font-weight:900;
       font-size: 13px;
-      border:1px solid rgba(255,255,255,.06);
-      background: rgba(2,6,23,.18);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(15,23,42,.45);
       scroll-snap-align: start;
       white-space: nowrap;
       transition: background .12s ease, color .12s ease, border-color .12s ease, transform .12s ease;
       min-height: 40px;
+      max-width: 100%;
     }
     .toc a:hover{
-      background: rgba(2,6,23,.35);
+      background: rgba(15,23,42,.65);
       color: var(--text);
-      border-color: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.16);
       transform: translateY(-1px);
     }
     @media (min-width: 980px){
@@ -425,12 +467,13 @@
       background: rgba(15,23,42,.55);
       box-shadow: var(--shadow2);
       padding: 16px;
+      max-width:100%;
     }
     @media (min-width: 720px){ .content{padding: 18px} }
 
     .section{
       padding: 14px 0;
-      border-top: 1px solid rgba(255,255,255,.06);
+      border-top: 1px solid rgba(255,255,255,.08);
       scroll-margin-top: calc(var(--navH) + env(safe-area-inset-top) + 16px);
     }
     .section:first-child{border-top:none; padding-top:0}
@@ -442,6 +485,7 @@
       display:flex;
       align-items:center;
       gap:10px;
+      flex-wrap:wrap;
     }
 
     .section p{
@@ -469,6 +513,7 @@
       gap:12px;
       align-items:flex-start;
       border: 1px solid transparent;
+      max-width:100%;
     }
     .callout .icoWrap{
       width: 30px;
@@ -478,6 +523,7 @@
       justify-content:center;
       border-radius: 12px;
       flex: 0 0 auto;
+      color: var(--text);
     }
 
     .callout.info{
@@ -488,16 +534,18 @@
     .callout.info .icoWrap{
       background: rgba(59,130,246,.14);
       border: 1px solid rgba(59,130,246,.22);
+      color: #CFE3FF;
     }
 
     .callout.danger{
-      border-color: rgba(239,68,68,.22);
+      border-color: rgba(239,68,68,.20);
       background: rgba(239,68,68,.10);
       color: #FECACA;
     }
     .callout.danger .icoWrap{
       background: rgba(239,68,68,.14);
-      border: 1px solid rgba(239,68,68,.22);
+      border: 1px solid rgba(239,68,68,.20);
+      color: #FECACA;
     }
 
     .link{
@@ -519,7 +567,14 @@
       font-size: 14px;
       margin-top: 20px;
     }
-    .foot{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+    .foot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      max-width:100%;
+    }
     .foot a{color: var(--text); font-weight:900; opacity:.92}
     .foot a:hover{opacity:1}
 
@@ -533,7 +588,7 @@
 <body>
   <a class="skip" href="#main">Aller au contenu principal</a>
 
-  <!-- ===== SVG ICONS (stroke/fill forcés BLANC) ===== -->
+  <!-- ===== SVG ICONS (stroke/fill forcés en BLANC comme index) ===== -->
   <svg width="0" height="0" style="position:absolute">
     <symbol id="i-menu" viewBox="0 0 24 24">
       <line x1="4" y1="7" x2="20" y2="7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
@@ -546,15 +601,11 @@
       <line x1="18" y1="6" x2="6" y2="18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
     </symbol>
 
-    <symbol id="i-life" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="9" fill="none" stroke="#FFFFFF" stroke-width="2"/>
-      <path d="M12 8v8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-      <path d="M8 12h8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-    </symbol>
-
-    <symbol id="i-lock" viewBox="0 0 24 24">
-      <rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
-      <path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    <symbol id="i-support" viewBox="0 0 24 24">
+      <path d="M4 12a8 8 0 0 1 16 0" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+      <path d="M4 12v4a2 2 0 0 0 2 2h2v-6H6a2 2 0 0 0-2 2z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M20 12v4a2 2 0 0 1-2 2h-2v-6h2a2 2 0 0 1 2 2z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
+      <path d="M12 20h4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
     </symbol>
 
     <symbol id="i-file" viewBox="0 0 24 24">
@@ -562,6 +613,11 @@
       <path d="M14 2v6h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" />
       <path d="M9 13h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
       <path d="M9 17h6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
     </symbol>
 
     <symbol id="i-mail" viewBox="0 0 24 24">
@@ -621,7 +677,6 @@
     <symbol id="i-pause" viewBox="0 0 24 24">
       <rect x="7" y="6" width="3" height="12" rx="1" fill="#FFFFFF"/>
       <rect x="14" y="6" width="3" height="12" rx="1" fill="#FFFFFF"/>
-      <rect x="5.5" y="4.5" width="13" height="15" rx="3" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".0"/>
     </symbol>
 
     <symbol id="i-refresh" viewBox="0 0 24 24">
@@ -639,7 +694,7 @@
     <div class="container nav-inner">
       <a class="brand" href="index.html" aria-label="Aller à l'accueil SmartCities">
         <span class="logo" aria-hidden="true">
-          <img class="logo-img" src="../assets/logo.png" alt="SmartCities" />
+          <img class="logo-img" src="logo.png" alt="SmartCities" />
         </span>
         <span class="brand-text">
           <strong>SmartCities</strong>
@@ -650,16 +705,19 @@
       <div class="nav-actions">
         <nav class="links" aria-label="Navigation principale">
           <a class="pill" href="support.html">
-            <svg class="ico" aria-hidden="true"><use href="#i-life"></use></svg>
+            <svg class="ico" aria-hidden="true"><use href="#i-support"></use></svg>
             Support
           </a>
           <a class="pill" href="privacy.html">
             <svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg>
             Confidentialité
           </a>
-          <a class="pill primary" href="mailto:smartcities@ylapps.com?subject=Question%20-%20Conditions%20SmartCities">
-            <svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg>
-            Contacter
+          <a class="pill" href="terms.html" aria-current="page">
+            <svg class="ico" aria-hidden="true"><use href="#i-file"></use></svg>
+            Conditions
+          </a>
+          <a class="pill primary" href="https://apps.apple.com/app/idXXXXXXXXX" rel="noopener noreferrer">
+             App Store
           </a>
         </nav>
 
@@ -688,16 +746,23 @@
 
     <nav class="drawer-nav" aria-label="Navigation mobile">
       <a class="pill" href="support.html">
-        <svg class="ico" aria-hidden="true"><use href="#i-life"></use></svg>
+        <svg class="ico" aria-hidden="true"><use href="#i-support"></use></svg>
         Support
       </a>
       <a class="pill" href="privacy.html">
         <svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg>
         Confidentialité
       </a>
-      <a class="pill primary" href="mailto:smartcities@ylapps.com?subject=Question%20-%20Conditions%20SmartCities">
+      <a class="pill" href="terms.html" aria-current="page">
+        <svg class="ico" aria-hidden="true"><use href="#i-file"></use></svg>
+        Conditions
+      </a>
+      <a class="pill primary" href="https://apps.apple.com/app/idXXXXXXXXX" rel="noopener noreferrer">
+         App Store
+      </a>
+      <a class="pill" href="mailto:smartcities@ylapps.com?subject=Support%20SmartCities">
         <svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg>
-        Contacter
+        Contacter le support
       </a>
     </nav>
 
@@ -830,7 +895,7 @@
           </h2>
           <p>
             Pour signaler une atteinte à des droits ou un contenu illicite, écrivez à
-            <a class="link" href="mailto:smartcities@ylapps.com?subject=Signalement%20-%20SmartCities"> smartcities@ylapps.com</a>
+            <a class="link" href="mailto:smartcities@ylapps.com?subject=Signalement%20-%20SmartCities">smartcities@ylapps.com</a>
             avec : URL/ID, description, preuves (si applicable) et vos coordonnées.
           </p>
           <p>
@@ -888,6 +953,7 @@
         <a href="index.html">Accueil</a>
         <a href="support.html">Support</a>
         <a href="privacy.html">Confidentialité</a>
+        <a href="terms.html">Conditions</a>
       </div>
     </div>
   </footer>
@@ -895,7 +961,6 @@
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
 
-    // ✅ Menu mobile
     const root = document.documentElement;
     const btn = document.getElementById("menuBtn");
     const closeBtn = document.getElementById("closeBtn");
@@ -940,7 +1005,6 @@
       });
     }
 
-    // ✅ Sommaire actif (optionnel)
     const sections = Array.from(document.querySelectorAll(".section[id]"));
     const tocLinks = Array.from(document.querySelectorAll("#tocLinks a"));
 
@@ -948,12 +1012,11 @@
       tocLinks.forEach(a => {
         const on = (a.getAttribute("href") || "") === ("#" + id);
         a.style.color = on ? "var(--text)" : "var(--muted)";
-        a.style.borderColor = on ? "rgba(255,255,255,.14)" : "rgba(255,255,255,.06)";
-        a.style.background = on ? "rgba(2,6,23,.35)" : "rgba(2,6,23,.18)";
+        a.style.borderColor = on ? "rgba(255,255,255,.16)" : "rgba(255,255,255,.08)";
+        a.style.background = on ? "rgba(15,23,42,.70)" : "rgba(15,23,42,.45)";
       });
     }
 
-    
     const io = new IntersectionObserver((entries) => {
       const visible = entries
         .filter(e => e.isIntersecting)
