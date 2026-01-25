@@ -2,78 +2,335 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Politique de confidentialité – SmartCities</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Politique de confidentialité — SmartCities</title>
+  <meta name="description" content="Politique de confidentialité SmartCities : données collectées, finalités, conservation, droits RGPD." />
+  <meta name="theme-color" content="#0B1220" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;margin:0;padding:32px;max-width:900px}
-    h1,h2,h3{margin-top:1.2em}
-    code,pre{background:#f4f4f4;padding:2px 6px;border-radius:4px}
-    a{color:#0a66c2;text-decoration:none}
-    a:hover{text-decoration:underline}
-    .muted{color:#666}
+    :root{
+      --bg:#0B1220;
+      --panel:#0F172A;
+      --text:#E5E7EB;
+      --muted:#94A3B8;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 24px;
+      --accent1:#3B82F6;
+      --accent2:#8B5CF6;
+      --ok:#10B981;
+      --warn:#F59E0B;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 650px at 20% -10%, rgba(59,130,246,.32), transparent 60%),
+        radial-gradient(900px 550px at 90% 10%, rgba(139,92,246,.26), transparent 55%),
+        var(--bg);
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:14px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800}
+    .logo{width:38px; height:38px; border-radius:12px; background: linear-gradient(135deg, var(--accent1), var(--accent2))}
+    .links{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.45);
+      font-weight:700; font-size:14px;
+    }
+    .pill:hover{background: rgba(15,23,42,.65)}
+    .pill.primary{
+      border:none;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      box-shadow: 0 14px 30px rgba(59,130,246,.18);
+    }
+
+    main{padding:32px 0 50px}
+    .hero{
+      border-radius: var(--radius2);
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,23,42,.78), rgba(15,23,42,.52));
+      box-shadow: var(--shadow);
+      padding:26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:0;
+      height:4px;
+      background: linear-gradient(90deg, rgba(59,130,246,.75), rgba(139,92,246,.75));
+      opacity:.65;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(16,185,129,.12);
+      border:1px solid rgba(16,185,129,.22);
+      color:#A7F3D0;
+      font-weight:800;
+      font-size:13px;
+    }
+    h1{margin:12px 0 8px; font-size:30px; letter-spacing:-.6px}
+    .lead{margin:0; color:var(--muted); line-height:1.7; max-width:80ch}
+    .meta{margin-top:12px; color: rgba(148,163,184,.95); font-size:13px; font-weight:700}
+
+    .layout{
+      margin-top:16px;
+      display:grid; gap:14px;
+      grid-template-columns: 280px 1fr;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .layout{grid-template-columns:1fr}
+    }
+
+    .toc{
+      position:sticky; top:84px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.55);
+      box-shadow: var(--shadow2);
+      padding:14px;
+    }
+    .toc h2{margin:0 0 10px; font-size:14px; letter-spacing:.2px}
+    .toc a{
+      display:block;
+      padding:10px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-weight:800;
+      font-size:13px;
+    }
+    .toc a:hover{background: rgba(2,6,23,.35); color: var(--text)}
+    .content{
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.55);
+      box-shadow: var(--shadow2);
+      padding:18px;
+    }
+
+    .section{
+      padding:14px 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .section:first-child{border-top:none; padding-top:0}
+    .section h2{
+      margin:0 0 8px;
+      font-size:17px;
+      letter-spacing:-.2px;
+    }
+    .section p{margin:0 0 10px; color: var(--muted); line-height:1.75; font-size:14px}
+    .section ul{margin:8px 0 0 18px; color: var(--muted); line-height:1.75; font-size:14px}
+    .section li{margin:6px 0}
+    .hl{
+      border-radius: 16px;
+      border:1px solid rgba(245,158,11,.22);
+      background: rgba(245,158,11,.10);
+      padding:14px;
+      color:#FDE68A;
+      font-size:14px;
+      line-height:1.65;
+      margin-top:10px;
+    }
+    .good{
+      border-radius: 16px;
+      border:1px solid rgba(16,185,129,.22);
+      background: rgba(16,185,129,.10);
+      padding:14px;
+      color:#A7F3D0;
+      font-size:14px;
+      line-height:1.65;
+      margin-top:10px;
+    }
+    .link{
+      font-weight:900;
+      color: var(--text);
+      opacity:.95;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+    .link:hover{opacity:1}
+
+    footer{
+      border-top: 1px solid var(--line);
+      background: rgba(11,18,32,.55);
+      padding:22px 0;
+      color: var(--muted);
+      font-size:14px;
+      margin-top: 20px;
+    }
+    .foot{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap}
+    .foot a{color: var(--text); font-weight:900; opacity:.92}
+    .foot a:hover{opacity:1}
   </style>
 </head>
+
 <body>
-  <h1>Politique de confidentialité</h1>
-  <p class="muted">Dernière mise à jour : 1 novembre 2025</p>
+  <header class="nav" role="banner">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="Aller à l'accueil SmartCities">
+        <span class="logo" aria-hidden="true"></span>
+        <span>SmartCities</span>
+      </a>
 
-  <h2>1) Qui sommes-nous ?</h2>
-  <p><strong>SmartCities</strong> est une application mobile permettant de consulter l’actualité locale, publier des signalements, échanger et visualiser une carte de la ville.</p>
-  <p>Contact : <a href="mailto:support@exemple.com">support@exemple.com</a> (remplace par ton email de support).</p>
+      <nav class="links" aria-label="Navigation principale">
+        <a class="pill" href="support.html">Support</a>
+        <a class="pill" href="terms.html">Conditions</a>
+        <a class="pill primary" href="mailto:smartcities@ylapps.com?subject=Question%20RGPD%20-%20SmartCities">RGPD</a>
+      </nav>
+    </div>
+  </header>
 
-  <h2>2) Données que nous traitons</h2>
-  <ul>
-    <li><strong>Compte</strong> : e-mail, pseudo, mot de passe chiffré.</li>
-    <li><strong>Contenus</strong> : signalements, commentaires, photos, pièces jointes.</li>
-    <li><strong>Localisation</strong> : position précise/approximative lorsque tu l’autorises pour afficher des éléments sur la carte.</li>
-    <li><strong>Identifiants techniques</strong> : identifiant interne utilisateur, jeton de notification push, logs de sécurité.</li>
-    <li><strong>Diagnostics</strong> : erreurs et performances de l’app (si activé).</li>
-  </ul>
+  <main class="container" role="main">
+    <section class="hero" aria-label="Politique de confidentialité">
+      <span class="badge">🔒 Conforme RGPD (informations essentielles)</span>
+      <h1>Politique de confidentialité</h1>
+      <p class="lead">
+        SmartCities collecte uniquement les informations nécessaires au fonctionnement de l’application (compte, contenus,
+        notifications et, si vous l’autorisez, localisation). Aucun usage publicitaire sans consentement.
+      </p>
+      <div class="meta">Dernière mise à jour : 25 janvier 2026</div>
+    </section>
 
-  <h2>3) Finalités et bases légales</h2>
-  <ul>
-    <li><strong>Fournir les fonctionnalités</strong> de l’app, gérer le compte, afficher la carte et les publications : <em>exécution du contrat</em>.</li>
-    <li><strong>Sécurité</strong>, prévention des abus, journalisation : <em>intérêt légitime</em>.</li>
-    <li><strong>Notifications</strong> liées à l’activité du compte : <em>intérêt légitime</em> et/ou <em>consentement</em> pour le push.</li>
-    <li><strong>Localisation</strong> pour carte et proximité : <em>consentement</em> (désactivable).</li>
-    <li><strong>Amélioration produit</strong> via diagnostics anonymisés : <em>intérêt légitime</em>.</li>
-  </ul>
+    <section class="layout" aria-label="Contenu">
+      <aside class="toc" aria-label="Sommaire">
+        <h2>Sommaire</h2>
+        <a href="#qui">1) Qui sommes-nous ?</a>
+        <a href="#donnees">2) Données traitées</a>
+        <a href="#finalites">3) Finalités & bases légales</a>
+        <a href="#destinataires">4) Destinataires & transferts</a>
+        <a href="#durees">5) Conservation</a>
+        <a href="#droits">6) Vos droits (RGPD)</a>
+        <a href="#securite">7) Sécurité</a>
+        <a href="#enfants">8) Mineurs</a>
+        <a href="#maj">9) Modifications</a>
+      </aside>
 
-  <h2>4) Destinataires et transferts</h2>
-  <ul>
-    <li><strong>Hébergement</strong> : serveur applicatif et base de données.</li>
-    <li><strong>Stockage d’images</strong> : Amazon Web Services S3.</li>
-    <li><strong>Notifications push</strong> : service de notifications (par ex. Expo/Apple/Google).</li>
-  </ul>
-  <p>Nous ne vendons pas les données. Aucun suivi publicitaire inter-apps.</p>
+      <article class="content">
+        <div class="section" id="qui">
+          <h2>1) Qui sommes-nous ?</h2>
+          <p>
+            <strong>SmartCities</strong> est une application mobile permettant de consulter l’actualité locale, publier des
+            signalements, échanger et visualiser une carte de la ville.
+          </p>
+          <p>
+            Contact (confidentialité / RGPD) : <a class="link" href="mailto:smartcities@ylapps.com?subject=RGPD%20-%20SmartCities">smartcities@ylapps.com</a>
+          </p>
+        </div>
 
-  <h2>5) Durées de conservation</h2>
-  <ul>
-    <li>Compte et contenus : jusqu’à <strong>suppression du compte</strong> ou demande d’effacement.</li>
-    <li>Logs techniques : ≤ <strong>12 mois</strong>.</li>
-    <li>Backups : selon cycles techniques ≤ <strong>30 jours</strong>.</li>
-  </ul>
+        <div class="section" id="donnees">
+          <h2>2) Données que nous traitons</h2>
+          <ul>
+            <li><strong>Compte :</strong> e-mail, pseudo, mot de passe (hashé côté serveur), photo de profil (facultatif).</li>
+            <li><strong>Contenus :</strong> signalements, commentaires, photos, pièces jointes.</li>
+            <li><strong>Localisation :</strong> position précise/approximative lorsque vous l’autorisez (ex : carte, proximité).</li>
+            <li><strong>Identifiants techniques :</strong> identifiant interne, jeton de notification push, logs de sécurité.</li>
+            <li><strong>Diagnostics :</strong> erreurs et performances (si activés / nécessaires au support).</li>
+          </ul>
+          <div class="good"><strong>✅</strong> Aucune donnée bancaire n’est stockée par SmartCities.</div>
+        </div>
 
-  <h2 id="choix">6) Tes choix et droits</h2>
-  <h3>Paramètres</h3>
-  <ul>
-    <li><strong>Localisation</strong> : iOS → Réglages → SmartCities → Localisation → “Jamais/Quand l’app est active”.</li>
-    <li><strong>Notifications</strong> : iOS → Réglages → Notifications → SmartCities.</li>
-    <li><strong>Suppression de compte</strong> : dans l’app → Paramètres → Compte → Supprimer mon compte.</li>
-  </ul>
-  <h3>Droits RGPD</h3>
-  <p>Accès, rectification, effacement, limitation, portabilité, opposition, retrait du consentement. Exerce-les à <a href="mailto:support@exemple.com">support@exemple.com</a>.</p>
+        <div class="section" id="finalites">
+          <h2>3) Finalités et bases légales</h2>
+          <ul>
+            <li><strong>Fournir le service</strong> (compte, publications, carte) : exécution du service.</li>
+            <li><strong>Sécurité</strong>, prévention des abus, journalisation : intérêt légitime.</li>
+            <li><strong>Notifications</strong> : intérêt légitime et/ou consentement (push).</li>
+            <li><strong>Localisation</strong> : consentement (désactivable dans iOS).</li>
+            <li><strong>Amélioration produit</strong> (diagnostics anonymisés) : intérêt légitime.</li>
+          </ul>
+          <div class="hl">
+            <strong>Important :</strong> vous pouvez retirer votre consentement (localisation / notifications) à tout moment via les réglages iOS.
+          </div>
+        </div>
 
-  <h2>7) Sécurité</h2>
-  <p>Chiffrement en transit (HTTPS). Accès restreints. Mots de passe chiffrés côté serveur.</p>
+        <div class="section" id="destinataires">
+          <h2>4) Destinataires et transferts</h2>
+          <ul>
+            <li><strong>Hébergement :</strong> serveur applicatif et base de données.</li>
+            <li><strong>Stockage médias :</strong> Amazon Web Services (ex : S3).</li>
+            <li><strong>Notifications :</strong> services push (ex : Expo / Apple / Google).</li>
+          </ul>
+          <p>Nous ne vendons pas vos données. Aucun suivi publicitaire inter-apps.</p>
+        </div>
 
-  <h2>8) Enfants</h2>
-  <p>L’app ne vise pas les mineurs sans autorisation parentale lorsque la loi l’exige.</p>
+        <div class="section" id="durees">
+          <h2>5) Durées de conservation</h2>
+          <ul>
+            <li><strong>Compte et contenus :</strong> jusqu’à suppression du compte ou demande d’effacement (selon obligations légales).</li>
+            <li><strong>Logs techniques :</strong> jusqu’à 12 mois (sécurité/support).</li>
+            <li><strong>Sauvegardes :</strong> cycles techniques (jusqu’à 30 jours).</li>
+          </ul>
+        </div>
 
-  <h2>9) Modifications</h2>
-  <p>Nous mettrons à jour cette page en cas de changement substantiel.</p>
+        <div class="section" id="droits">
+          <h2>6) Vos choix et droits (RGPD)</h2>
+          <p><strong>Réglages iOS :</strong></p>
+          <ul>
+            <li><strong>Localisation :</strong> iOS → Réglages → SmartCities → Localisation → “Jamais / Quand l’app est active”.</li>
+            <li><strong>Notifications :</strong> iOS → Réglages → Notifications → SmartCities.</li>
+            <li><strong>Suppression de compte :</strong> dans l’app → Paramètres → Compte → Supprimer mon compte.</li>
+          </ul>
+          <p>
+            Droits : accès, rectification, effacement, limitation, portabilité, opposition, retrait du consentement.
+            Pour exercer vos droits : <a class="link" href="mailto:smartcities@ylapps.com?subject=Demande%20RGPD%20-%20SmartCities">smartcities@ylapps.com</a>.
+          </p>
+        </div>
 
-  <p class="muted">© SmartCities</p>
+        <div class="section" id="securite">
+          <h2>7) Sécurité</h2>
+          <p>
+            Chiffrement en transit (HTTPS), accès restreints, pratiques de sécurité (mots de passe hashés, contrôles d’accès, journalisation).
+          </p>
+        </div>
+
+        <div class="section" id="enfants">
+          <h2>8) Enfants</h2>
+          <p>L’app ne vise pas les mineurs sans autorisation parentale lorsque la loi l’exige.</p>
+        </div>
+
+        <div class="section" id="maj">
+          <h2>9) Modifications</h2>
+          <p>Nous mettrons à jour cette page en cas de changement substantiel, avec une date de mise à jour visible en haut du document.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container foot">
+      <div>© <span id="y"></span> SmartCities — <a href="mailto:smartcities@ylapps.com">smartcities@ylapps.com</a></div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="index.html">Accueil</a>
+        <a href="support.html">Support</a>
+        <a href="terms.html">Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
- 

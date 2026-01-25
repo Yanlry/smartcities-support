@@ -1,45 +1,317 @@
-<!doctype html><html lang="fr"><head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Conditions d’utilisation – SmartCities</title>
-    <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;margin:0;padding:32px;max-width:900px}
-    h1,h2{margin-top:1.2em}.muted{color:#666}a{color:#0a66c2;text-decoration:none}a:hover{text-decoration:underline}
-    </style></head><body>
-    <h1>Conditions d’utilisation</h1>
-    <p class="muted">Dernière mise à jour : 1 novembre 2025</p>
-    
-    <h2>1) Objet</h2>
-    <p>SmartCities permet de consulter et publier des contenus locaux (signalements, photos, messages) et d’afficher une carte.</p>
-    
-    <h2>2) Propriété des contenus et licence UGC</h2>
-    <p>Tu conserves tes droits sur les contenus que tu publies. Tu concèdes à SmartCities une licence mondiale, non exclusive et gratuite pour héberger, stocker, reproduire, afficher et distribuer ces contenus dans l’app et ses services techniques, pendant la durée nécessaire au service et aux obligations légales.</p>
-    
-    <h2>3) Contenus interdits</h2>
-    <ul>
-      <li>Atteinte aux droits d’auteur, marques, droits à l’image et à la vie privée.</li>
-      <li>Diffamation, incitation à la haine, contenus illicites, pornographie, exploitation de mineurs.</li>
-      <li>Spam, fraude, malware, coordonnées privées sans consentement.</li>
-    </ul>
-    
-    <h2 id="takedown">4) Signalement et retrait</h2>
-    <p>Pour signaler une atteinte à des droits, écris à <a href="mailto:support@ylapps.com">support@ylapps.com</a> avec : URL, description, preuve de titularité et tes coordonnées. Nous pouvons retirer ou restreindre l’accès aux contenus litigieux.</p>
-    
-    <h2>5) Contenus et services tiers</h2>
-    <p>L’app affiche des contenus tiers, notamment des cartes et tuiles cartographiques. Ces éléments restent la propriété de leurs titulaires et sont soumis à leurs licences et attributions.</p>
-    <ul>
-      <li><strong>Apple Maps</strong> : attribution gérée par iOS.</li>
-      <li><strong>Google Maps</strong> : inclure les mentions exigées par Google si utilisé.</li>
-      <li><strong>Mapbox / OpenStreetMap</strong> : « © OpenStreetMap contributors », « © Mapbox » si utilisés.</li>
-    </ul>
-    
-    <h2>6) Liens externes</h2>
-    <p>Les liens vers des sites tiers sont fournis pour convenance. Nous ne contrôlons pas ces contenus.</p>
-    
-    <h2>7) Suspension</h2>
-    <p>Tout manquement peut entraîner suppression de contenus ou suspension de compte.</p>
-    
-    <h2>8) Modifications</h2>
-    <p>Nous pouvons modifier ces conditions. La version en ligne fait foi.</p>
-    
-    <p class="muted">© SmartCities — <a href="/privacy.html">Confidentialité</a> — <a href="/support.html">Support</a></p>
-    </body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Conditions d’utilisation — SmartCities</title>
+  <meta name="description" content="Conditions d’utilisation SmartCities : règles, contenus interdits, signalement et retrait." />
+  <meta name="theme-color" content="#0B1220" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0B1220;
+      --panel:#0F172A;
+      --text:#E5E7EB;
+      --muted:#94A3B8;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 24px;
+      --accent1:#3B82F6;
+      --accent2:#8B5CF6;
+      --danger:#EF4444;
+      --warn:#F59E0B;
+      --ok:#10B981;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 650px at 20% -10%, rgba(59,130,246,.32), transparent 60%),
+        radial-gradient(900px 550px at 90% 10%, rgba(139,92,246,.26), transparent 55%),
+        var(--bg);
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:14px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800}
+    .logo{width:38px; height:38px; border-radius:12px; background: linear-gradient(135deg, var(--accent1), var(--accent2))}
+    .links{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.45);
+      font-weight:700; font-size:14px;
+    }
+    .pill:hover{background: rgba(15,23,42,.65)}
+    .pill.primary{
+      border:none;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      box-shadow: 0 14px 30px rgba(59,130,246,.18);
+    }
+
+    main{padding:32px 0 50px}
+    .hero{
+      border-radius: var(--radius2);
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,23,42,.78), rgba(15,23,42,.52));
+      box-shadow: var(--shadow);
+      padding:26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:0;
+      height:4px;
+      background: linear-gradient(90deg, rgba(59,130,246,.75), rgba(139,92,246,.75));
+      opacity:.65;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(239,68,68,.10);
+      border:1px solid rgba(239,68,68,.22);
+      color:#FECACA;
+      font-weight:800;
+      font-size:13px;
+    }
+    h1{margin:12px 0 8px; font-size:30px; letter-spacing:-.6px}
+    .lead{margin:0; color:var(--muted); line-height:1.7; max-width:85ch}
+    .meta{margin-top:12px; color: rgba(148,163,184,.95); font-size:13px; font-weight:700}
+
+    .layout{
+      margin-top:16px;
+      display:grid; gap:14px;
+      grid-template-columns: 280px 1fr;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .layout{grid-template-columns:1fr}
+    }
+
+    .toc{
+      position:sticky; top:84px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.55);
+      box-shadow: var(--shadow2);
+      padding:14px;
+    }
+    .toc h2{margin:0 0 10px; font-size:14px; letter-spacing:.2px}
+    .toc a{
+      display:block;
+      padding:10px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-weight:800;
+      font-size:13px;
+    }
+    .toc a:hover{background: rgba(2,6,23,.35); color: var(--text)}
+
+    .content{
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.55);
+      box-shadow: var(--shadow2);
+      padding:18px;
+    }
+    .section{
+      padding:14px 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .section:first-child{border-top:none; padding-top:0}
+    .section h2{margin:0 0 8px; font-size:17px; letter-spacing:-.2px}
+    .section p{margin:0 0 10px; color: var(--muted); line-height:1.75; font-size:14px}
+    .section ul{margin:8px 0 0 18px; color: var(--muted); line-height:1.75; font-size:14px}
+    .section li{margin:6px 0}
+
+    .danger{
+      border-radius: 16px;
+      border:1px solid rgba(239,68,68,.22);
+      background: rgba(239,68,68,.10);
+      padding:14px;
+      color:#FECACA;
+      font-size:14px;
+      line-height:1.65;
+      margin-top:10px;
+    }
+    .info{
+      border-radius: 16px;
+      border:1px solid rgba(59,130,246,.22);
+      background: rgba(59,130,246,.10);
+      padding:14px;
+      color:#CFE3FF;
+      font-size:14px;
+      line-height:1.65;
+      margin-top:10px;
+    }
+    .link{
+      font-weight:900;
+      color: var(--text);
+      opacity:.95;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+    .link:hover{opacity:1}
+
+    footer{
+      border-top: 1px solid var(--line);
+      background: rgba(11,18,32,.55);
+      padding:22px 0;
+      color: var(--muted);
+      font-size:14px;
+      margin-top: 20px;
+    }
+    .foot{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap}
+    .foot a{color: var(--text); font-weight:900; opacity:.92}
+    .foot a:hover{opacity:1}
+  </style>
+</head>
+
+<body>
+  <header class="nav" role="banner">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="Aller à l'accueil SmartCities">
+        <span class="logo" aria-hidden="true"></span>
+        <span>SmartCities</span>
+      </a>
+
+      <nav class="links" aria-label="Navigation principale">
+        <a class="pill" href="support.html">Support</a>
+        <a class="pill" href="privacy.html">Confidentialité</a>
+        <a class="pill primary" href="mailto:smartcities@ylapps.com?subject=Question%20-%20Conditions%20SmartCities">Contacter</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section class="hero" aria-label="Conditions d'utilisation">
+      <span class="badge">⚠️ Règles d’utilisation & modération</span>
+      <h1>Conditions d’utilisation</h1>
+      <p class="lead">
+        Ces conditions encadrent l’usage de SmartCities : publication de contenus, règles de modération,
+        signalement et retrait. En utilisant l’app, vous acceptez ces conditions.
+      </p>
+      <div class="meta">Dernière mise à jour : 25 janvier 2026</div>
+    </section>
+
+    <section class="layout" aria-label="Contenu">
+      <aside class="toc" aria-label="Sommaire">
+        <h2>Sommaire</h2>
+        <a href="#objet">1) Objet</a>
+        <a href="#ugc">2) Propriété des contenus & licence UGC</a>
+        <a href="#interdits">3) Contenus interdits</a>
+        <a href="#takedown">4) Signalement & retrait</a>
+        <a href="#tiers">5) Services tiers</a>
+        <a href="#liens">6) Liens externes</a>
+        <a href="#suspension">7) Suspension</a>
+        <a href="#modifs">8) Modifications</a>
+      </aside>
+
+      <article class="content">
+        <div class="section" id="objet">
+          <h2>1) Objet</h2>
+          <p>
+            SmartCities permet de consulter et publier des contenus locaux (signalements, photos, messages) et d’afficher une carte.
+          </p>
+        </div>
+
+        <div class="section" id="ugc">
+          <h2>2) Propriété des contenus et licence UGC</h2>
+          <p>
+            Vous conservez vos droits sur les contenus que vous publiez. Vous concédez à SmartCities une licence mondiale,
+            non exclusive et gratuite pour héberger, stocker, reproduire, afficher et distribuer ces contenus dans l’app
+            et ses services techniques, pendant la durée nécessaire au service et aux obligations légales.
+          </p>
+          <div class="info">
+            <strong>ℹ️</strong> Cette licence sert uniquement à opérer le service (affichage, stockage, modération, transmission technique).
+          </div>
+        </div>
+
+        <div class="section" id="interdits">
+          <h2>3) Contenus interdits</h2>
+          <ul>
+            <li>Atteinte aux droits d’auteur, marques, droits à l’image et à la vie privée.</li>
+            <li>Diffamation, incitation à la haine, contenus illicites, pornographie, exploitation de mineurs.</li>
+            <li>Spam, fraude, malware, coordonnées privées sans consentement.</li>
+          </ul>
+          <div class="danger">
+            <strong>Tolérance zéro :</strong> le contenu choquant, abusif ou illégal peut être retiré et entraîner la suspension du compte.
+          </div>
+        </div>
+
+        <div class="section" id="takedown">
+          <h2>4) Signalement et retrait</h2>
+          <p>
+            Pour signaler une atteinte à des droits ou un contenu illicite, écrivez à
+            <a class="link" href="mailto:smartcities@ylapps.com?subject=Signalement%20-%20SmartCities">smartcities@ylapps.com</a>
+            avec : URL/ID, description, preuves (si applicable) et vos coordonnées.
+          </p>
+          <p>
+            Nous pouvons retirer ou restreindre l’accès aux contenus litigieux. L’app propose également des outils
+            de <strong>signalement</strong> et de <strong>blocage</strong>.
+          </p>
+        </div>
+
+        <div class="section" id="tiers">
+          <h2>5) Contenus et services tiers</h2>
+          <p>
+            L’app peut afficher des contenus tiers (ex : cartes). Ces éléments restent la propriété de leurs titulaires et sont soumis à leurs licences.
+          </p>
+          <ul>
+            <li><strong>Apple Maps</strong> : attribution gérée par iOS.</li>
+            <li><strong>Google Maps</strong> : mentions exigées par Google si utilisé.</li>
+            <li><strong>Mapbox / OpenStreetMap</strong> : “© OpenStreetMap contributors”, “© Mapbox” si utilisés.</li>
+          </ul>
+        </div>
+
+        <div class="section" id="liens">
+          <h2>6) Liens externes</h2>
+          <p>Les liens vers des sites tiers sont fournis pour convenance. SmartCities ne contrôle pas ces contenus.</p>
+        </div>
+
+        <div class="section" id="suspension">
+          <h2>7) Suspension</h2>
+          <p>Tout manquement peut entraîner suppression de contenus, limitation d’accès ou suspension de compte.</p>
+        </div>
+
+        <div class="section" id="modifs">
+          <h2>8) Modifications</h2>
+          <p>Nous pouvons modifier ces conditions. La version en ligne fait foi.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container foot">
+      <div>© <span id="y"></span> SmartCities — <a href="mailto:smartcities@ylapps.com">smartcities@ylapps.com</a></div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="index.html">Accueil</a>
+        <a href="support.html">Support</a>
+        <a href="privacy.html">Confidentialité</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
